@@ -1,4 +1,4 @@
-<img width="2543" height="1326" alt="2" src="https://github.com/user-attachments/assets/39f2a9e8-9396-4faf-bcc7-9296f67c7097" /># Personnel Leave & Equipment Request Management System
+# Personnel Leave & Equipment Request Management System
 
 ## 📋 Project Versions
 
