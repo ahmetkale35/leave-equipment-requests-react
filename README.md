@@ -1,4 +1,4 @@
-# Personnel Leave & Equipment Request Management System
+<img width="2543" height="1326" alt="2" src="https://github.com/user-attachments/assets/39f2a9e8-9396-4faf-bcc7-9296f67c7097" /># Personnel Leave & Equipment Request Management System
 
 ## 📋 Project Versions
 
@@ -166,7 +166,12 @@ This React frontend connects to an **ASP.NET Core Web API** backend. The backend
 
 ## Screenshots
 
-> _Add screenshots or GIFs here to showcase the UI and main flows._
+<img width="2532" height="1331" alt="1" src="https://github.com/user-attachments/assets/5b7211a3-b1ee-4033-9d0b-ff21eb2fbc72" />
+<img width="2543" height="1326" alt="2" src="https://github.com/user-attachments/assets/a684b932-54a5-45f8-a355-0bd7edbb457d" />
+<img width="2532" height="1250" alt="3" src="https://github.com/user-attachments/assets/7d33ead4-fe50-4a8f-b379-0f56bf586d45" />
+<img width="2533" height="1246" alt="8" src="https://github.com/user-attachments/assets/be5689cb-a6bf-4219-b559-9dcde8db2f5c" />
+<img width="2518" height="1295" alt="12" src="https://github.com/user-attachments/assets/29795a02-1761-4cce-88ef-2683100c8b65" />
+
 
 ---
 
