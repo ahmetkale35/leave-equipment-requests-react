@@ -4,7 +4,7 @@
 
 This repository contains multiple implementations of the same Personnel Leave & Equipment Request Management System:
 
-- **🟢 [React Frontend]([https://github.com/yourusername/project-name/tree/react-frontend](https://github.com/ahmetkale35/leave-equipment-requests-react))** - Modern React SPA with Material UI & Tailwind CSS
+- **🟢 [React Frontend](https://github.com/ahmetkale35/leave-equipment-requests-react)** - Modern React SPA with Material UI & Tailwind CSS
 - **🔵 [ASP.NET MVC](https://github.com/ahmetkale35/Personnel-Leave-and-Equipment-Request-Management-System)** - Traditional MVC application with Razor views
 - **🟡 [ASP.NET Web API](https://github.com/ahmetkale35/Personnel-Equipment-Leave-WebAPI)** - RESTful API backend with separate frontend
 
