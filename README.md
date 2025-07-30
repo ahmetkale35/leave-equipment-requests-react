@@ -176,11 +176,6 @@ This React frontend connects to an **ASP.NET Core Web API** backend. The backend
 
 ---
 
-## Contact
-
-For questions, issues, or feature requests, please open an issue or contact the maintainer.
-
----
 
 ## 📊 Version Comparison
 
