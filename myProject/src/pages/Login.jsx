@@ -23,7 +23,18 @@ export default function Login() {
             if (!response.ok) throw new Error('Kullanıcı adı veya şifre hatalı!');
 
             const data = await response.json();
-            localStorage.setItem('token', data.token);
+            const token = data.token;
+
+            localStorage.setItem('token', token);
+
+            // ✅ Token'dan payload'ı decode et
+            const payload = JSON.parse(atob(token.split('.')[1]));
+
+            // ✅ Role bilgisi bu key altında
+            const role = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+            console.log('Kullanıcı Rolü:', role);
+
             navigate('/home');
         } catch (err) {
             setError(err.message);
@@ -31,6 +42,7 @@ export default function Login() {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-400 via-indigo-500 to-purple-600 p-6">

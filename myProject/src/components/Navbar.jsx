@@ -20,29 +20,43 @@ export default function Navbar() {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.clear();
+        sessionStorage.clear();
         navigate('/login');
     };
 
-    const menuItems = [
-        { to: '/home', label: 'Ana Sayfa' },
-        { to: '/my-leave-requests', label: 'İzin Taleplerim' },
-        { to: '/create-leave', label: 'İzin Talebi Oluştur' },
-        { to: '/create-equipment', label: 'Ekipman Talebi' },
-        { to: '/my-equipment-requests', label: 'Ekipman Taleplerim' },
-    ];
+    // Menü Öğeleri (role'e göre düzenleniyor)
+    let menuItems = [];
 
     if (role === 'Admin') {
-        menuItems.push(
+        // ✅ Admin için sadece yönetim sekmeleri
+        menuItems = [
+            { to: '/home', label: 'Ana Sayfa' },
             { to: '/manage-leaves', label: 'İzin Talepleri Yönet' },
             { to: '/manage-equipments', label: 'Ekipman Talepleri Yönet' }
-        );
+        ];
+    } else {
+        // ✅ Normal kullanıcı ve IT için default sekmeler
+        menuItems = [
+            { to: '/home', label: 'Ana Sayfa' },
+            { to: '/my-leave-requests', label: 'İzin Taleplerim' },
+            { to: '/create-leave', label: 'İzin Talebi Oluştur' },
+            { to: '/create-equipment', label: 'Ekipman Talebi' },
+            { to: '/my-equipment-requests', label: 'Ekipman Taleplerim' },
+        ];
+
+        // ✅ IT rolüne ek olarak yönetim sekmesi
+        if (role === 'It') {
+            menuItems.push({ to: '/manage-equipments', label: 'Ekipman Talepleri Yönet' });
+        }
     }
+
     return (
         <nav className="fixed top-4 left-0 right-0 z-50 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 shadow-lg py-5">
             <div className="max-w-7xl mx-auto px-8 flex items-center">
-                
-                {/* Menü öğeleri - ortada */}
-                <div className="flex-1 flex justify-center space-x-6">
+
+                {/* Menü öğeleri - ortada eşit aralık */}
+                <div className="flex-1 flex justify-center space-x-8">
                     {menuItems.map(({ to, label }) => (
                         <NavLink
                             key={to}

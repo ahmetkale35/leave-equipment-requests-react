@@ -94,10 +94,13 @@ export default function App() {
         path="/manage-equipments"
         element={
           <PrivateRoute>
-            {getUserRoleFromToken() === 'Admin' ? <Pending2 /> : <Navigate to="/home" replace />}
+            {getUserRoleFromToken() === 'Admin' || getUserRoleFromToken() === 'It' ? (
+              <Pending2 />
+            ) : (
+              <Navigate to="/home" replace />
+            )}
           </PrivateRoute>
         }
-
       />
 
 

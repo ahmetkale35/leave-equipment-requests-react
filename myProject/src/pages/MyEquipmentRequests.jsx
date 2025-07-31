@@ -8,6 +8,7 @@ import {
     MenuItem,
     CircularProgress,
 } from "@mui/material";
+import { fetchMyEquipmentRequests, setAuthToken } from "../services/ApiService";
 
 export default function MyEquipmentRequests() {
     const [equipments, setEquipments] = useState([]);
@@ -20,7 +21,6 @@ export default function MyEquipmentRequests() {
     const [darkMode, setDarkMode] = useState(true);
     const [filter, setFilter] = useState({ search: "", durum: "" });
 
-    // Filtreli liste
     const filteredEquipments = equipments.filter((eq) => {
         const searchText = filter.search.toLowerCase();
         const durumMatch = filter.durum ? eq.durum === filter.durum : true;
@@ -43,26 +43,21 @@ export default function MyEquipmentRequests() {
         setError(null);
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("https://localhost:7012/api/Equipment/MyRequests", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            
-            const data = await response.json();
-            
-            // 404 durumunda özel kontrol - kullanıcının ekipman talebi yoksa bu normal bir durum
-            if (response.status === 404 && data.Message && data.Message.includes("has no equipment requests")) {
-                // Kullanıcının hiç ekipman talebi yok, bu normal bir durum
-                setEquipments([]);
-            } else if (response.status >= 400) {
-                // Gerçek bir hata durumu
-                throw new Error("Ekipman talepleri alınamadı");
+            setAuthToken(token);
+
+            const data = await fetchMyEquipmentRequests();
+
+            if (Array.isArray(data)) {
+                setEquipments(data);
             } else {
-                // Normal başarılı response
-                const equipmentsData = Array.isArray(data) ? data : [];
-                setEquipments(equipmentsData);
+                setEquipments([]);
             }
         } catch (err) {
-            setError(err.message);
+            if (err.response && err.response.status === 404) {
+                setEquipments([]); // Kullanıcının hiç ekipman talebi yok
+            } else {
+                setError("Ekipman talepleri alınamadı");
+            }
         } finally {
             setLoading(false);
         }
@@ -180,20 +175,6 @@ export default function MyEquipmentRequests() {
                         <div className="text-center text-red-600 font-semibold">{error}</div>
                     ) : equipments.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-[400px] bg-indigo-50 dark:bg-gray-700 rounded-xl border border-indigo-200 shadow-inner p-8">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-20 w-20 text-indigo-400 mb-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M8 7V3m8 4V3m-9 4h10M5 11h14M5 15h14m-9 4h4"
-                                />
-                            </svg>
                             <h2 className="text-2xl font-semibold mb-2">Hiç kayıtlı ekipman talebi yok</h2>
                             <p className="text-indigo-500 dark:text-gray-300">
                                 Henüz hiç ekipman talebi oluşturmamışsınız.
@@ -201,20 +182,6 @@ export default function MyEquipmentRequests() {
                         </div>
                     ) : filteredEquipments.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-[400px] bg-indigo-50 dark:bg-gray-700 rounded-xl border border-indigo-200 shadow-inner p-8">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-20 w-20 text-indigo-400 mb-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M8 7V3m8 4V3m-9 4h10M5 11h14M5 15h14m-9 4h4"
-                                />
-                            </svg>
                             <h2 className="text-2xl font-semibold mb-2">Filtreleme sonucu bulunamadı</h2>
                             <p className="text-indigo-500 dark:text-gray-300">
                                 Filtreleri temizleyin veya yeni talep oluşturun.

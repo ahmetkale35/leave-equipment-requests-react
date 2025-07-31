@@ -41,19 +41,21 @@ export default function Pending2() {
             return;
         }
 
-        if (role !== "Admin") {
+        if (role !== "Admin" && role !== "It") {
+            debugger;
             navigate("/home");
             return;
         }
-
         setAuthToken(token);
 
         fetchPendingEquipmentRequests()
             .then((data) => {
+                console.log("Gelen JSON:", data); // ✅ Gelen JSON'u yazdır
                 setRequests(data);
                 setLoading(false);
             })
             .catch((err) => {
+                console.error("Hata:", err); // ✅ Hata detayını yazdır
                 setError(err.message || "Beklenmeyen hata oluştu.");
                 setLoading(false);
             });
