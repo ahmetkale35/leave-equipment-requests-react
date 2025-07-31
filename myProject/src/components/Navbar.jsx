@@ -19,7 +19,9 @@ export default function Navbar() {
     const role = getUserRoleFromToken();
 
     const handleLogout = () => {
+
         localStorage.removeItem('token');
+        setAuthToken(null);
         localStorage.clear();
         sessionStorage.clear();
         navigate('/login');

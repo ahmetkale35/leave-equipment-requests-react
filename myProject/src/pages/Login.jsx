@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { setAuthToken } from '../services/ApiService';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -20,28 +21,41 @@ export default function Login() {
                 body: JSON.stringify({ username, password }),
             });
 
-            if (!response.ok) throw new Error('Kullanıcı adı veya şifre hatalı!');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Giriş başarısız!');
+            }
 
             const data = await response.json();
             const token = data.token;
-
             localStorage.setItem('token', token);
 
-            // ✅ Token'dan payload'ı decode et
+            // Token decode
             const payload = JSON.parse(atob(token.split('.')[1]));
 
-            // ✅ Role bilgisi bu key altında
-            const role = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+            // Expiration kontrolü
+            const now = Date.now() / 1000;
+            if (payload.exp && payload.exp < now) {
+                throw new Error('Token süresi dolmuş! Tekrar giriş yapın.');
+            }
 
+            const role = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
             console.log('Kullanıcı Rolü:', role);
 
+            // API istekleri için token ayarı
+
+            setAuthToken(token);
+
+            // Role'e göre yönlendirme
             navigate('/home');
+
         } catch (err) {
             setError(err.message);
         } finally {
             setLoading(false);
         }
     };
+
 
 
     return (

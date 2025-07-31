@@ -16,12 +16,23 @@ function getUserRoleFromToken() {
 
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
+
+        // Expiration kontrolü
+        const now = Date.now() / 1000; // saniye cinsinden
+        if (payload.exp && payload.exp < now) {
+            console.warn("Token süresi dolmuş!");
+            localStorage.removeItem('token');
+            return null;
+        }
+
         return payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
     } catch (error) {
         console.error("Token decode hatası:", error);
         return null;
     }
 }
+
+
 
 export default function Home() {
     const navigate = useNavigate();

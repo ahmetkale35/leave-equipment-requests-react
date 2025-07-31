@@ -41,6 +41,7 @@ export default function Pending() {
         }
 
         if (role !== "Admin") {
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             navigate("/home");
             return;
         }
