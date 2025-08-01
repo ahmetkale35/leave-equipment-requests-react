@@ -13,6 +13,7 @@ function getUserRoleFromToken() {
     const token = localStorage.getItem("token");
     if (!token) return null;
 
+
     try {
         const payload = JSON.parse(atob(token.split(".")[1]));
         return payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
@@ -41,7 +42,7 @@ export default function Pending() {
         }
 
         if (role !== "Admin") {
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+            console.warn("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             navigate("/home");
             return;
         }
@@ -50,10 +51,12 @@ export default function Pending() {
 
         fetchPendingLeaves()
             .then((data) => {
+                console.log("Gelen JSON:", data); // ✅ Gelen JSON'u yazdır
                 setLeaves(data);
                 setLoading(false);
             })
             .catch((err) => {
+                console.error("Hata:", err); // ✅ Hata detayını yazdır
                 setError(err.message || "Beklenmeyen bir hata oluştu.");
                 setLoading(false);
             });

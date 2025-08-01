@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import SimpleWeather from '../components/SimpleWeather';
+import CalendarWidget from '../components/CalendarWidget';
 import {
     FiCalendar,
     FiPlusSquare,
@@ -16,23 +18,12 @@ function getUserRoleFromToken() {
 
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-
-        // Expiration kontrolü
-        const now = Date.now() / 1000; // saniye cinsinden
-        if (payload.exp && payload.exp < now) {
-            console.warn("Token süresi dolmuş!");
-            localStorage.removeItem('token');
-            return null;
-        }
-
         return payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
     } catch (error) {
         console.error("Token decode hatası:", error);
         return null;
     }
 }
-
-
 
 export default function Home() {
     const navigate = useNavigate();
@@ -92,7 +83,7 @@ export default function Home() {
         );
     }
 
-    // IT için yönetim + talepler
+    // IT için yönetim
     if (role === 'It') {
         cards.push(
             {
@@ -142,9 +133,25 @@ export default function Home() {
 
             {/* Dekoratif Blur Bloblar */}
             <div className="absolute top-28 left-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
-            <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
 
-            {/* Kartlar */}
+
+            {/* Takvimi çevreleyen mor blob */}
+            <div className="fixed bottom-10 right-[-4rem] w-[30rem] h-[30rem] bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse z-10"></div>
+
+            {/* Takvim Widget'ı */}
+            <div className="fixed bottom-32 right-8 z-20">
+                <CalendarWidget />
+            </div>
+
+
+
+            <div className="absolute top-32 right-4 w-48 h-48 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse z-0"></div>
+            {/* Hava Durumu Widget'ı - Sağ üst köşede */}
+            <div className="absolute top-40 right-8 z-10">
+                <SimpleWeather />
+            </div>
+
+            {/* Ana Kartlar - Container içinde */}
             <div className="flex flex-wrap justify-center gap-8 max-w-7xl mx-auto">
                 {cards.map((card) => (
                     <div

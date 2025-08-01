@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setAuthToken } from '../services/ApiService';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -21,42 +20,42 @@ export default function Login() {
                 body: JSON.stringify({ username, password }),
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Giriş başarısız!');
-            }
+            if (!response.ok) throw new Error('Kullanıcı adı veya şifre hatalı!');
 
             const data = await response.json();
             const token = data.token;
+
+            // Token'ı kaydet
             localStorage.setItem('token', token);
 
-            // Token decode
-            const payload = JSON.parse(atob(token.split('.')[1]));
-
-            // Expiration kontrolü
-            const now = Date.now() / 1000;
-            if (payload.exp && payload.exp < now) {
-                throw new Error('Token süresi dolmuş! Tekrar giriş yapın.');
+            // Token'ın doğru kaydedildiğini kontrol et
+            const savedToken = localStorage.getItem('token');
+            if (savedToken !== token) {
+                throw new Error('Token kaydedilemedi!');
             }
 
+            // Token'ı decode et ve kontrol et
+            const payload = JSON.parse(atob(token.split('.')[1]));
             const role = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+            if (!role) {
+                throw new Error('Geçersiz token formatı!');
+            }
+
             console.log('Kullanıcı Rolü:', role);
 
-            // API istekleri için token ayarı
-
-            setAuthToken(token);
-
-            // Role'e göre yönlendirme
-            navigate('/home');
+            // Token'ın localStorage'a yazılmasını bekle, sonra yönlendir
+            setTimeout(() => {
+                navigate('/home');
+            }, 100);
 
         } catch (err) {
             setError(err.message);
+            localStorage.removeItem('token');
         } finally {
             setLoading(false);
         }
     };
-
-
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-400 via-indigo-500 to-purple-600 p-6">
