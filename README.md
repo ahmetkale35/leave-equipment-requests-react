@@ -173,8 +173,10 @@ This React frontend connects to an **ASP.NET Core Web API** backend. The backend
 <img width="2532" height="1250" alt="3" src="https://github.com/user-attachments/assets/7d33ead4-fe50-4a8f-b379-0f56bf586d45" />
 <img width="2533" height="1246" alt="8" src="https://github.com/user-attachments/assets/be5689cb-a6bf-4219-b559-9dcde8db2f5c" />
 <img width="2518" height="1295" alt="12" src="https://github.com/user-attachments/assets/29795a02-1761-4cce-88ef-2683100c8b65" />
-<img width="2514" height="1255" alt="Ekran görüntüsü 2025-07-30 163107" src="https://github.com/user-attachments/assets/b23cf192-5e8f-4bb5-849f-cfff80781848" />
-<img width="2537" height="1227" alt="6" src="https://github.com/user-attachments/assets/6be6c7dd-69ad-4b72-b09b-adcf40041289" />
+<img width="2542" height="1312" alt="q2" src="https://github.com/user-attachments/assets/b9ef591f-7491-4858-99af-acfedec8a970" />
+
+
+<img width="2555" height="1270" alt="q3" src="https://github.com/user-attachments/assets/624a15e6-1df7-44f5-8894-9c31e0871db0" />
 
 ---
 
