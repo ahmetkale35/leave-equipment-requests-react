@@ -42,7 +42,6 @@ export default function Pending2() {
         }
 
         if (role !== "Admin" && role !== "It") {
-            debugger;
             navigate("/home");
             return;
         }

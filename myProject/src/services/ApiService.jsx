@@ -83,5 +83,16 @@ export async function rejectEquipmentRequest(id) {
     const response = await api.put(`/Equipment/${id}/reject`);
     return response.data;
 }
+// Ekipman Stokları
+export async function getAllStocks(id) {
+    const response = await api.get(`/Equipment/GetAllStocks`);
+    return response.data;
+}
+
+// Bütün Onaylanan Ekipmanlar - Zimmetler
+export async function getAllApprovoed() {
+    const response = await api.get(`/Equipment/GetAllApprovedEquipments`);
+    return response.data;
+}
 
 export default api;

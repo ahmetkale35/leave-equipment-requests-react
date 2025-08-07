@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import ErrorAlert from "../components/ErrorAlert";
+import SuccessAlert from "../components/SuccessAlert";
 
 export default function CreateEquipmentRequest() {
     const [equipmentItemId, setEquipmentItemId] = useState("");
     const [adet, setAdet] = useState("");
     const [aciklama, setAciklama] = useState("");
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
@@ -47,14 +51,41 @@ export default function CreateEquipmentRequest() {
                 }
             );
 
-            if (!res.ok) throw new Error("Ekipman talebi oluşturulamadı");
+            const responseData = await res.json();
 
-            alert("Ekipman talebi başarıyla oluşturuldu!");
-            navigate("/my-equipment-requests");
+            if (!res.ok) {
+                const errorMessage =
+                    responseData?.Message ||
+                    responseData?.message ||
+                    "Ekipman talebi oluşturulamadı.";
+                throw new Error(errorMessage);
+            }
+
+            setError("");
+            setSuccess("Ekipman talebi başarıyla oluşturuldu!");
+
+            setTimeout(() => {
+                navigate("/my-equipment-requests");
+            }, 1000);
         } catch (error) {
-            alert("Hata: " + error.message);
+            setSuccess("");
+            setError(error.message);
         }
     };
+
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => setError(""), 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (success) {
+            const timer = setTimeout(() => setSuccess(""), 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [success]);
 
     return (
         <>
@@ -65,6 +96,14 @@ export default function CreateEquipmentRequest() {
                     <h2 className="text-2xl font-bold mb-8 text-indigo-900 tracking-wide drop-shadow-sm">
                         Yeni Ekipman Talebi Oluştur
                     </h2>
+
+                    {error && (
+                        <ErrorAlert message={error} onClose={() => setError("")} />
+                    )}
+
+                    {success && (
+                        <SuccessAlert message={success} onClose={() => setSuccess("")} />
+                    )}
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
